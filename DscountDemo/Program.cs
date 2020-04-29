@@ -10,36 +10,31 @@ namespace Andrew.DiscountDemo
     {
         static void Main(string[] args)
         {
-            JulianDemo.CartContext cart = new JulianDemo.CartContext();
-            JulianDemo.POS pos = new JulianDemo.POS();
-            cart.PurchasedItems.AddRange(JulianDemo.JulianDemo.LoadProducts(@"..\..\..\products4.json"));
-            pos.ActivedRules.AddRange(JulianDemo.JulianDemo.LoadRules());
+            CartContext cart = new CartContext();
+            POS pos = new POS();
+            
+            cart.PurchasedItems.AddRange(LoadProducts(@"..\..\..\products3.json"));
+            pos.ActivedRules.AddRange(LoadRules());
+            
             pos.CheckoutProcess(cart);
-            // CartContext cart = new CartContext();
-            // POS pos = new POS();
-            //
-            // cart.PurchasedItems.AddRange(LoadProducts(@"..\..\..\products3.json"));
-            // pos.ActivedRules.AddRange(LoadRules());
-            //
-            // pos.CheckoutProcess(cart);
-            //
+            
             Console.WriteLine($"購買商品:");
             Console.WriteLine($"---------------------------------------------------");
             foreach(var p in cart.PurchasedItems)
             {
-                Console.WriteLine($"- {p.Id,02}, [{p.SKU}] {p.Price,8:C}, {p.Name} 折扣{p.Discount} {p.TagsValue}");
+                Console.WriteLine($"- {p.Id,02}, [{p.SKU}] {p.Price,8:C}, {p.Name} {p.TagsValue}");
             }
             Console.WriteLine();
             
             Console.WriteLine();
-            // Console.WriteLine($"折扣:");
-            // Console.WriteLine($"---------------------------------------------------");
-            // foreach(var d in cart.AppliedDiscounts)
-            // {
-            //     Console.WriteLine($"- 折抵 {d.Amount,8:C}, {d.Rule.Name} ({d.Rule.Note})");
-            //     foreach (var p in d.Products) Console.WriteLine($"  * 符合: {p.Id, 02}, [{p.SKU}], {p.Name} {p.TagsValue}");
-            //     Console.WriteLine();
-            // }
+            Console.WriteLine($"折扣:");
+            Console.WriteLine($"---------------------------------------------------");
+            foreach(var d in cart.AppliedDiscounts)
+            {
+                Console.WriteLine($"- 折抵 {d.Amount,8:C}, {d.Rule.Name} ({d.Rule.Note})");
+                foreach (var p in d.Products) Console.WriteLine($"  * 符合: {p.Id, 02}, [{p.SKU}], {p.Name} {p.TagsValue}");
+                Console.WriteLine();
+            }
             Console.WriteLine();
             
             Console.WriteLine($"---------------------------------------------------");

@@ -8,32 +8,6 @@ using Newtonsoft.Json;
 
 namespace JulianDemo
 {
-    public static class JulianDemo
-    {
-        static int _seed = 0;
-
-        public static IEnumerable<Product> LoadProducts(string filename = @"products.json")
-        {
-            foreach (var p in JsonConvert.DeserializeObject<Product[]>(File.ReadAllText(filename)))
-            {
-                _seed++;
-                p.Id = _seed;
-
-                yield return p;
-            }
-        }
-
-        public static IEnumerable<RuleBase> LoadRules()
-        {
-            //yield return new BuyMoreBoxesDiscountRule(2, 12);   // 買 2 箱，折扣 12%
-            //yield return new TotalPriceDiscountRule(1000, 100); // 滿 1000 折 100
-            //yield break;
-
-            yield return new ComplexDiscountRule("同商品加購優惠", 10, "熱銷飲品", 12);
-            yield return new DiscountRule4("同商品加購優惠", 10);
-            yield return new DiscountRule6("熱銷飲品", 12);
-        }
-    }
 
     public class CartContext
     {
@@ -147,7 +121,7 @@ namespace JulianDemo
                 {
                     foreach (var product in matched)
                     {
-                        product.Discount = p.Price * this.PercentOff / 100;
+                        product.Discount = product.Price * this.PercentOff / 100;
                         product.IsDiscounted = true;
                     }
 
