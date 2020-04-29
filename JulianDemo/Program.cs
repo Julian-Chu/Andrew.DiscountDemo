@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace JulianDemo
@@ -15,31 +16,15 @@ namespace JulianDemo
             cart.PurchasedItems.AddRange(LoadProducts(@"..\..\..\products4.json"));
             pos.ActivedRules.AddRange(LoadRules());
             pos.CheckoutProcess(cart);
-            // CartContext cart = new CartContext();
-            // POS pos = new POS();
-            //
-            // cart.PurchasedItems.AddRange(LoadProducts(@"..\..\..\products3.json"));
-            // pos.ActivedRules.AddRange(LoadRules());
-            //
-            // pos.CheckoutProcess(cart);
-            //
             Console.WriteLine($"購買商品:");
             Console.WriteLine($"---------------------------------------------------");
-            foreach(var p in cart.PurchasedItems)
+            foreach(var p in cart.PurchasedItems.OrderBy(item=>item.Note))
             {
-                Console.WriteLine($"- {p.Id,02}, [{p.SKU}] {p.Price,8:C}, {p.Name} 折扣{p.Discount} {p.TagsValue}");
+                Console.WriteLine($"- {p.Id,02},[{p.SKU}] {p.Price,8:C}, 折扣{p.Discount, 8:C}, Final:{p.Price-p.Discount, 8:C}, {p.Name}  {p.TagsValue} {p.Note}");
             }
             Console.WriteLine();
             
             Console.WriteLine();
-            // Console.WriteLine($"折扣:");
-            // Console.WriteLine($"---------------------------------------------------");
-            // foreach(var d in cart.AppliedDiscounts)
-            // {
-            //     Console.WriteLine($"- 折抵 {d.Amount,8:C}, {d.Rule.Name} ({d.Rule.Note})");
-            //     foreach (var p in d.Products) Console.WriteLine($"  * 符合: {p.Id, 02}, [{p.SKU}], {p.Name} {p.TagsValue}");
-            //     Console.WriteLine();
-            // }
             Console.WriteLine();
             
             Console.WriteLine($"---------------------------------------------------");
@@ -68,6 +53,7 @@ namespace JulianDemo
             var discountRule4 = new DiscountRule4("同商品加購優惠", 10);
             var discountRule6 = new DiscountRule6("熱銷飲品", 12);
             yield return new ComplexDiscountRule(discountRule4,discountRule6);
+            yield return new ComboDiscount( "餐餐超值配");
             // yield return discountRule4;
             // yield return discountRule6;
         }
