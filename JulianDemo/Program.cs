@@ -65,10 +65,11 @@ namespace JulianDemo
             //yield return new BuyMoreBoxesDiscountRule(2, 12);   // 買 2 箱，折扣 12%
             //yield return new TotalPriceDiscountRule(1000, 100); // 滿 1000 折 100
             //yield break;
-
-            yield return new ComplexDiscountRule("同商品加購優惠", 10, "熱銷飲品", 12);
-            yield return new DiscountRule4("同商品加購優惠", 10);
-            yield return new DiscountRule6("熱銷飲品", 12);
+            var discountRule4 = new DiscountRule4("同商品加購優惠", 10);
+            var discountRule6 = new DiscountRule6("熱銷飲品", 12);
+            yield return new ComplexDiscountRule(discountRule4,discountRule6);
+            // yield return discountRule4;
+            // yield return discountRule6;
         }
     }
 }
